@@ -31,7 +31,8 @@ def pregunta_01():
         total += int(fila[1])
     return total
 
-
+from collections import Counter
+letras = ('A','B','C','D','E')
 
 def pregunta_02():
     """
@@ -48,7 +49,13 @@ def pregunta_02():
     ]
 
     """
-    return
+    lista = []
+    cnt = Counter()
+    for valor in clean_data:
+        cnt[valor[0]] += 1
+    for letra in letras:
+        lista.append((letra,cnt[letra]))
+    return lista
 
 
 def pregunta_03():
@@ -66,9 +73,16 @@ def pregunta_03():
     ]
 
     """
-    return
+    p3 = {'A':0,'B':0,'C':0,'D':0,'E':0}
+    for hilera in clean_data:
+        p3[hilera[0]] += int(hilera[1]) 
+    lst1 = []
+    for letra in letras:
+        lst1.append((letra,p3[letra]))    
+    return lst1
 
 
+from datetime import datetime
 def pregunta_04():
     """
     La columna 3 contiene una fecha en formato `YYYY-MM-DD`. Retorne la cantidad de
@@ -91,7 +105,32 @@ def pregunta_04():
     ]
 
     """
-    return
+    concurrencias = Counter()
+
+    for row in clean_data:
+
+
+            #
+            # Contador
+            #
+        if row[2] == '1999-02-29':
+            concurrencias[2] += 1
+        else:    
+            #
+            # Convierte el string a un objeto fecha:
+            # 2016-05-23 
+            #
+            date = datetime.strptime(row[2], "%Y-%m-%d")
+
+
+        concurrencias[date.month] += 1
+        resultado = []
+    for j in range(1,13):
+        if j<10:
+            resultado.append((('0'+str(j)),concurrencias[j]))
+        else:
+            resultado.append((str(j),concurrencias[j]))
+    return resultado
 
 
 def pregunta_05():
@@ -109,7 +148,14 @@ def pregunta_05():
     ]
 
     """
-    return
+    l = {"A":[0,15],"B":[0,15],"C":[0,15],"D":[0,15],"E":[0,15]}
+    for row in clean_data:
+        l[row[0]][0] = max(l[row[0]][0],int(row[1]))
+        l[row[0]][1] = min(l[row[0]][1],int(row[1]))
+    final = []
+    for letra in l:
+        final.append((letra,l[letra][0],l[letra][1]))    
+    return final
 
 
 def pregunta_06():
