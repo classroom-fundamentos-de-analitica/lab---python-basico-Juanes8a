@@ -11,8 +11,13 @@ Utilice el archivo `data.csv` para resolver las preguntas.
 
 
 """
+import os
+import sys
+with open(os.path.join(sys.path[0],"data.csv"),"r") as file:
+    datos=file.readlines()
+clean_data=[row.rstrip("\n").split("\t")  for row in datos]
 
-
+    
 def pregunta_01():
     """
     Retorne la suma de la segunda columna.
@@ -21,7 +26,10 @@ def pregunta_01():
     214
 
     """
-    return
+    total = 0
+    for fila in clean_data:
+    total += int(fila[1])
+    return total
 
 
 def pregunta_02():
