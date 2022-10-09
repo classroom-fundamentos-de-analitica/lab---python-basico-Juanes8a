@@ -28,8 +28,9 @@ def pregunta_01():
     """
     total = 0
     for fila in clean_data:
-    total += int(fila[1])
+        total += int(fila[1])
     return total
+
 
 
 def pregunta_02():
