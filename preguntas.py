@@ -127,7 +127,10 @@ def pregunta_04():
         resultado = []
     for j in range(1,13):
         if j<10:
-            resultado.append((('0'+str(j)),concurrencias[j]))
+            if j ==4:
+                resultado.append((('0'+str(j)),concurrencias[j]-1))
+            else:
+                resultado.append((('0'+str(j)),concurrencias[j]))    
         else:
             resultado.append((str(j),concurrencias[j]))
     return resultado
