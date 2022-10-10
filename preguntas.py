@@ -13,6 +13,7 @@ Utilice el archivo `data.csv` para resolver las preguntas.
 """
 import os
 import sys
+
 with open(os.path.join(sys.path[0],"data.csv"),"r") as file:
     datos=file.readlines()
 clean_data=[row.rstrip("\n").split("\t")  for row in datos]
@@ -183,7 +184,19 @@ def pregunta_06():
     ]
 
     """
-    return
+    resultado = []
+    p6 = {"aaa":[],"bbb":[],"ccc":[],"ddd":[],"eee":[],
+        "fff":[],"ggg":[],"hhh":[],"iii":[],"jjj":[]}
+    for row in clean_data:
+        columna = row[4].split(',')
+        for item in columna:
+            clave = item[0:3]
+            valor = int(item[4:])
+            p6[clave]+= [valor]
+    for claves in p6:
+        tupla = (claves,min(p6[claves]),max(p6[claves]))
+        resultado.append(tupla)
+    return resultado
 
 
 def pregunta_07():
@@ -207,7 +220,13 @@ def pregunta_07():
     ]
 
     """
-    return
+    p7 = {x:[] for x in range(0,10)}
+    for row in clean_data:
+        p7[int(row[1])] += [row[0]]
+    resultado = []
+    for claves in p7:
+        resultado.append((claves,p7[claves]))
+    return resultado
 
 
 def pregunta_08():
@@ -232,7 +251,16 @@ def pregunta_08():
     ]
 
     """
-    return
+    p8 = {x:set() for x in range(0,10)}
+    for row in clean_data:
+        p8[int(row[1])].add(row[0])
+
+    resultado = []
+    for claves in p8:
+        lista = list(p8[claves])
+        lista.sort()
+        resultado.append((claves,lista))
+    return resultado
 
 
 def pregunta_09():
@@ -255,7 +283,14 @@ def pregunta_09():
     }
 
     """
-    return
+    p9 = {"aaa":0,"bbb":0,"ccc":0,"ddd":0,"eee":0,
+     "fff":0,"ggg":0,"hhh":0,"iii":0,"jjj":0}
+    for row in clean_data:
+        columna = row[4].split(',')
+        for item in columna:
+            clave = item[0:3]
+            p9[clave] += 1
+    return p9
 
 
 def pregunta_10():
@@ -276,7 +311,12 @@ def pregunta_10():
 
 
     """
-    return
+    p10 = []
+    for row in clean_data:
+        col4 = len(row[3].split(","))
+        col5 = len(row[4].split(","))
+        p10.append((row[0],col4,col5))
+    return p10
 
 
 def pregunta_11():
@@ -297,7 +337,13 @@ def pregunta_11():
 
 
     """
-    return
+    p11 = {"a": 0,"b": 0,"c": 0,"d": 0,
+        "e": 0,"f": 0,"g":0}
+    for row in clean_data:
+        letras = row[3].split(",")
+        for letra in letras:
+            p11[letra] += int(row[1])
+    return p11
 
 
 def pregunta_12():
@@ -315,4 +361,12 @@ def pregunta_12():
     }
 
     """
-    return
+    p12 = {'A':0,'B':0,'C':0,'D':0,'E':0}
+    for row in clean_data:
+        valores = row[4].split(",")
+        suma = 0
+        for item in valores:
+            valor = int(item[4:])
+            suma += valor
+        p12[row[0]] += suma
+    return p12
