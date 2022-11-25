@@ -11,8 +11,14 @@ Utilice el archivo `data.csv` para resolver las preguntas.
 
 
 """
+import os
+import sys
 
+with open(os.path.join(sys.path[0],"data.csv"),"r") as file:
+    datos=file.readlines()
+clean_data=[row.rstrip("\n").split("\t")  for row in datos]
 
+    
 def pregunta_01():
     """
     Retorne la suma de la segunda columna.
@@ -21,8 +27,13 @@ def pregunta_01():
     214
 
     """
-    return
+    total = 0
+    for fila in clean_data:
+        total += int(fila[1])
+    return total
 
+from collections import Counter
+letras = ('A','B','C','D','E')
 
 def pregunta_02():
     """
@@ -39,7 +50,13 @@ def pregunta_02():
     ]
 
     """
-    return
+    lista = []
+    cnt = Counter()
+    for valor in clean_data:
+        cnt[valor[0]] += 1
+    for letra in letras:
+        lista.append((letra,cnt[letra]))
+    return lista
 
 
 def pregunta_03():
@@ -57,9 +74,16 @@ def pregunta_03():
     ]
 
     """
-    return
+    p3 = {'A':0,'B':0,'C':0,'D':0,'E':0}
+    for hilera in clean_data:
+        p3[hilera[0]] += int(hilera[1]) 
+    lst1 = []
+    for letra in letras:
+        lst1.append((letra,p3[letra]))    
+    return lst1
 
 
+from datetime import datetime
 def pregunta_04():
     """
     La columna 3 contiene una fecha en formato `YYYY-MM-DD`. Retorne la cantidad de
@@ -82,7 +106,35 @@ def pregunta_04():
     ]
 
     """
-    return
+    concurrencias = Counter()
+
+    for row in clean_data:
+
+
+            #
+            # Contador
+            #
+        if row[2] == '1999-02-29':
+            concurrencias[2] += 1
+        else:    
+            #
+            # Convierte el string a un objeto fecha:
+            # 2016-05-23 
+            #
+            date = datetime.strptime(row[2], "%Y-%m-%d")
+
+
+        concurrencias[date.month] += 1
+        resultado = []
+    for j in range(1,13):
+        if j<10:
+            if j ==4:
+                resultado.append((('0'+str(j)),concurrencias[j]-1))
+            else:
+                resultado.append((('0'+str(j)),concurrencias[j]))    
+        else:
+            resultado.append((str(j),concurrencias[j]))
+    return resultado
 
 
 def pregunta_05():
@@ -100,7 +152,14 @@ def pregunta_05():
     ]
 
     """
-    return
+    l = {"A":[0,15],"B":[0,15],"C":[0,15],"D":[0,15],"E":[0,15]}
+    for row in clean_data:
+        l[row[0]][0] = max(l[row[0]][0],int(row[1]))
+        l[row[0]][1] = min(l[row[0]][1],int(row[1]))
+    final = []
+    for letra in l:
+        final.append((letra,l[letra][0],l[letra][1]))    
+    return final
 
 
 def pregunta_06():
@@ -125,7 +184,19 @@ def pregunta_06():
     ]
 
     """
-    return
+    resultado = []
+    p6 = {"aaa":[],"bbb":[],"ccc":[],"ddd":[],"eee":[],
+        "fff":[],"ggg":[],"hhh":[],"iii":[],"jjj":[]}
+    for row in clean_data:
+        columna = row[4].split(',')
+        for item in columna:
+            clave = item[0:3]
+            valor = int(item[4:])
+            p6[clave]+= [valor]
+    for claves in p6:
+        tupla = (claves,min(p6[claves]),max(p6[claves]))
+        resultado.append(tupla)
+    return resultado
 
 
 def pregunta_07():
@@ -149,7 +220,13 @@ def pregunta_07():
     ]
 
     """
-    return
+    p7 = {x:[] for x in range(0,10)}
+    for row in clean_data:
+        p7[int(row[1])] += [row[0]]
+    resultado = []
+    for claves in p7:
+        resultado.append((claves,p7[claves]))
+    return resultado
 
 
 def pregunta_08():
@@ -174,7 +251,16 @@ def pregunta_08():
     ]
 
     """
-    return
+    p8 = {x:set() for x in range(0,10)}
+    for row in clean_data:
+        p8[int(row[1])].add(row[0])
+
+    resultado = []
+    for claves in p8:
+        lista = list(p8[claves])
+        lista.sort()
+        resultado.append((claves,lista))
+    return resultado
 
 
 def pregunta_09():
@@ -197,7 +283,14 @@ def pregunta_09():
     }
 
     """
-    return
+    p9 = {"aaa":0,"bbb":0,"ccc":0,"ddd":0,"eee":0,
+     "fff":0,"ggg":0,"hhh":0,"iii":0,"jjj":0}
+    for row in clean_data:
+        columna = row[4].split(',')
+        for item in columna:
+            clave = item[0:3]
+            p9[clave] += 1
+    return p9
 
 
 def pregunta_10():
@@ -218,7 +311,12 @@ def pregunta_10():
 
 
     """
-    return
+    p10 = []
+    for row in clean_data:
+        col4 = len(row[3].split(","))
+        col5 = len(row[4].split(","))
+        p10.append((row[0],col4,col5))
+    return p10
 
 
 def pregunta_11():
@@ -239,7 +337,13 @@ def pregunta_11():
 
 
     """
-    return
+    p11 = {"a": 0,"b": 0,"c": 0,"d": 0,
+        "e": 0,"f": 0,"g":0}
+    for row in clean_data:
+        letras = row[3].split(",")
+        for letra in letras:
+            p11[letra] += int(row[1])
+    return p11
 
 
 def pregunta_12():
@@ -257,4 +361,12 @@ def pregunta_12():
     }
 
     """
-    return
+    p12 = {'A':0,'B':0,'C':0,'D':0,'E':0}
+    for row in clean_data:
+        valores = row[4].split(",")
+        suma = 0
+        for item in valores:
+            valor = int(item[4:])
+            suma += valor
+        p12[row[0]] += suma
+    return p12
